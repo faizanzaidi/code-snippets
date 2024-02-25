@@ -1,0 +1,30 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+env:
+  CI: true
+
+jobs:
+  build:
+    name: Code Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm i
+        
+      - name: Build
+        run: npm run build
+
+      - name: Run Tests
+        run: CI=true npm run test
